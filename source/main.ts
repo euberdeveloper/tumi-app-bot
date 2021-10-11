@@ -7,6 +7,7 @@ export interface Event {
     timestamp: Date;
     title: string;
     spots: number;
+    link: string;
 }
 
 async function main(): Promise<void> {
@@ -28,7 +29,7 @@ async function main(): Promise<void> {
             }
             else {
                 const linkTag = await child.$('a[fxLayout]');
-                const link = await linkTag?.evaluate(el => el.getAttribute('href'));
+                const link = await linkTag?.evaluate(el => el.getAttribute('href')) as string;
 
                 const titleTag = await child.$('p.font-bold');
                 const title = await titleTag?.evaluate(el => el.textContent) as string;
@@ -45,7 +46,8 @@ async function main(): Promise<void> {
                 events.push({
                     timestamp,
                     title,
-                    spots
+                    spots,
+                    link
                 })
             }
         }
