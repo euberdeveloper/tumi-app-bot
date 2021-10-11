@@ -4,7 +4,9 @@
   "description": "A telegram bot to receive a message when there is a new spot for tumi events",
   "main": "dist/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "transpile": "tsc -p source",
+    "start": "node dist/main",
+    "serve": "npm run transpile && npm start"
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,11 @@
   },
   "homepage": "https://github.com/euberdeveloper/tumi-app-bot#readme",
   "dependencies": {
+    "date-and-time": "^2.0.1",
     "puppeteer": "^10.4.0"
+  },
+  "devDependencies": {
+    "@types/date-and-time": "^0.13.0",
+    "typescript": "^4.4.3"
   }
 }
