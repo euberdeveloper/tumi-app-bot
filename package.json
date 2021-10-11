@@ -1,0 +1,29 @@
+{
+  "name": "tumi-app-bot",
+  "version": "1.0.0",
+  "description": "A telegram bot to receive a message when there is a new spot for tumi events",
+  "main": "dist/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/euberdeveloper/tumi-app-bot.git"
+  },
+  "keywords": [
+    "tumi",
+    "tum",
+    "muenchen",
+    "esn",
+    "events"
+  ],
+  "author": "Eugenio Vinicio Berretta <euberdeveloper@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/euberdeveloper/tumi-app-bot/issues"
+  },
+  "homepage": "https://github.com/euberdeveloper/tumi-app-bot#readme",
+  "dependencies": {
+    "puppeteer": "^10.4.0"
+  }
+}
