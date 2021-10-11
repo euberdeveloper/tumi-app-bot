@@ -1,5 +1,5 @@
-import { Scraper } from './utils/scraper';
-import OPTIONS from './options';
+import { Scraper } from '@/utils/scraper';
+import OPTIONS from '@/options';
 
 async function main(): Promise<void> {
     const scraper = new Scraper(`${OPTIONS.baseUrl}${OPTIONS.eventsPath}`, OPTIONS.timeout);
