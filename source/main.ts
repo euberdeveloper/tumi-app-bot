@@ -11,7 +11,7 @@ export interface Event {
 }
 
 async function main(): Promise<void> {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
     const page = await browser.newPage();
     await page.goto(OPTIONS.link);
     await page.waitForSelector('tumi-event-list-page main tumi-grid > div', { timeout: 30000 });
