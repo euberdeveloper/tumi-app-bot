@@ -17,7 +17,7 @@ async function main(): Promise<void> {
     const scraper = new Scraper(`${OPTIONS.baseUrl}${OPTIONS.eventsPath}`, OPTIONS.timeout);
     await scraper.init();
 
-    const bot = new Bot(OPTIONS.telegram.botToken);
+    const bot = new Bot(OPTIONS.telegram.botToken, database);
 
     const scheduler = new Scheduler({
         host: OPTIONS.redis.host,

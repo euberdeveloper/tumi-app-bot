@@ -1,9 +1,20 @@
 import { Telegraf } from 'telegraf';
 
+import { Database } from '@/utils/database';
 import { Difference } from '@/types';
 
 export class Bot {
     private bot: Telegraf;
+    private database: Database;
+
+    private init(): void {
+        this.bot.start(async ctx => {
+            await this.database.pushChat(ctx.chat.id);
+            return ctx.reply('Welcome, I am the bot that will notify you if a new tumi event arrives or if spots are set free!');
+        });
+        this.bot.help(ctx => ctx.reply('Welcome, I am the bot that will notify you if a new tumi event arrives or if spots are set free!'));
+        this.bot.launch();
+    }
 
     private getMessageFromDifference(difference: Difference): string {
         const { type, event } = difference;
@@ -21,19 +32,18 @@ export class Bot {
         }
     }
 
-    constructor(botToken: string) {
+    constructor(botToken: string, database: Database) {
+        this.database = database;
         this.bot = new Telegraf(botToken);
-
-        this.bot.start(ctx => {
-            return ctx.reply('Welcome, I am the bot that will notify you if a new tumi event arrives or if spots are set free!');
-        });
-        this.bot.help(ctx => ctx.reply('Welcome, I am the bot that will notify you if a new tumi event arrives or if spots are set free!'));
-        this.bot.launch();
+        this.init();
     }
 
     public async sendMessage(difference: Difference): Promise<void> {
         const message = this.getMessageFromDifference(difference);
-        await this.bot.telegram.sendMessage(532535556, message);
+        const chatIds = await this.database.getChats();
+        for (const chatId of chatIds) {
+            await this.bot.telegram.sendMessage(chatId, message);
+        }
     }
 
 }

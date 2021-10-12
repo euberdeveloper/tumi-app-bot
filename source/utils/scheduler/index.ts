@@ -30,7 +30,17 @@ export class Scheduler {
                 const oldEvents = await database.getEvents();
                 const newEvents = await scraper.getEvents();
                 await database.setEvents(newEvents);
-                const differences = checkDifferences(oldEvents, newEvents);
+                const differences = checkDifferences([{
+                    title: 'bubu',
+                    link: 'https://google.com',
+                    timestamp: new Date(),
+                    spots: 0
+                }], [{
+                    title: 'bubu',
+                    link: 'https://google.com',
+                    timestamp: new Date(),
+                    spots: 10
+                }]);
                 
                 for (const difference of differences) {
                     await bot.sendMessage(difference);
