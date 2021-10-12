@@ -13,5 +13,8 @@ export default {
         host: process.env.REDIS_HOST ?? 'localhost',
         port: process.env.REDIS_PORT !== undefined ? +process.env.REDIS_PORT : 9379
     },
-    scrapingCron: process.env.SCRAPING_CRON ?? '* * * * *'
+    scrapingCron: process.env.SCRAPING_CRON ?? '* * * * *',
+    telegram: {
+        botToken: process.env.TELEGRAM_BOT_TOKEN as string
+    }
 };

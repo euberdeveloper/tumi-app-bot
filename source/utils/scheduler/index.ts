@@ -3,6 +3,7 @@ import * as Bull from 'bull';
 import { Database } from '@/utils/database';
 import { Scraper } from '@/utils/scraper';
 import { checkDifferences } from '@/utils/checkDifferences';
+import { Bot } from '@/utils/bot';
 
 
 export class Scheduler {
@@ -19,7 +20,7 @@ export class Scheduler {
         }
     }
 
-    constructor(dbOptions: { host: string, port: number }, scrapingCron: string, database: Database, scraper: Scraper) {
+    constructor(dbOptions: { host: string, port: number }, scrapingCron: string, database: Database, scraper: Scraper, bot: Bot) {
         this.bull = new Bull(this.queueName, {
             redis: dbOptions
         });
@@ -30,7 +31,10 @@ export class Scheduler {
                 const newEvents = await scraper.getEvents();
                 await database.setEvents(newEvents);
                 const differences = checkDifferences(oldEvents, newEvents);
-                console.log(differences);
+                
+                for (const difference of differences) {
+                    await bot.sendMessage(difference);
+                }
             }
             catch (error) {
                 console.error(error);
