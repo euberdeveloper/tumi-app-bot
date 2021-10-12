@@ -8,5 +8,9 @@ dotenv.config({
 export default {
     baseUrl: process.env.BASE_URL ?? 'https://tumi.esn.world',
     eventsPath: process.env.EVENTS_PATH ?? '/events',
-    timeout: process.env.TIMEOUT !== undefined ? +process.env.TIMEOUT : 30000
+    timeout: process.env.TIMEOUT !== undefined ? +process.env.TIMEOUT : 30000,
+    redis: {
+        host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT !== undefined ? +process.env.REDIS_PORT : undefined
+    }
 };
