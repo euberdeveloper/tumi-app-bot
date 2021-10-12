@@ -4,6 +4,8 @@ import * as redis from 'redis';
 import { TumiEvent } from '@/types';
 
 export class Database {
+    private static readonly EVENTS_KEY = 'tumiEvents';
+
     private client: redis.RedisClient;
 
     private getAsync: (key: string) => Promise<string | null>;
@@ -18,7 +20,7 @@ export class Database {
     }
 
     public async getEvents(): Promise<TumiEvent[] | null> {
-        const jsonResponse = await this.getAsync('events');
+        const jsonResponse = await this.getAsync(Database.EVENTS_KEY);
         return jsonResponse
             ? JSON.parse(jsonResponse).map((event: any) => {
                 event.timestamp = new Date(event.timestamp);
@@ -29,7 +31,7 @@ export class Database {
 
     public async setEvents(events: TumiEvent[]): Promise<void> {
         const jsonBody = JSON.stringify(events);
-        await this.setAsync('events', jsonBody);
+        await this.setAsync(Database.EVENTS_KEY, jsonBody);
     }
 
     public async close(): Promise<void> {
