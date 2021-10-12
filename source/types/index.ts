@@ -4,3 +4,8 @@ export interface TumiEvent {
     spots: number;
     link: string;
 }
+
+export interface Difference {
+    type: 'new' | 'set_free';
+    event: TumiEvent;
+}
