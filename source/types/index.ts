@@ -1,4 +1,4 @@
-export interface Event {
+export interface TumiEvent {
     timestamp: Date;
     title: string;
     spots: number;

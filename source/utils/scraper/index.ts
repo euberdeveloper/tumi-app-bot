@@ -2,7 +2,7 @@ import * as puppeteer from 'puppeteer';
 import { Browser, Page, ElementHandle } from 'puppeteer';
 import * as dateAndTime from 'date-and-time';
 
-import { Event } from '@/types';
+import { TumiEvent } from '@/types';
 
 type TagElement = ElementHandle<Element>;
 
@@ -90,8 +90,8 @@ export class Scraper {
         return !spots || !spots.includes('Available spots: ') ? 0 : +spots.split('Available spots: ')[1];
     }
 
-    private async getEventsHelper(): Promise<Event[]> {
-        const events: Event[] = [];
+    private async getEventsHelper(): Promise<TumiEvent[]> {
+        const events: TumiEvent[] = [];
 
         const children = await this.rootTag.$$('div > span, div > tumi-event-list-item');
 
@@ -134,7 +134,7 @@ export class Scraper {
         await this.page.goto(this.pageUrl);
     }
 
-    public async getEvents(): Promise<Event[]> {
+    public async getEvents(): Promise<TumiEvent[]> {
         this.rootTag = await this.getRootTag();
         return this.getEventsHelper();
     }
