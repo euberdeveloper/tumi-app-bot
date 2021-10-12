@@ -2,6 +2,7 @@ import './utils/moduleAlias';
 
 import { Scraper } from '@/utils/scraper';
 import { Database } from '@/utils/database';
+import { Scheduler } from '@/utils/scheduler';
 
 import OPTIONS from '@/options';
 
@@ -10,14 +11,14 @@ async function main(): Promise<void> {
         host: OPTIONS.redis.host,
         port: OPTIONS.redis.port
     });
-    const currEvents = await database.getEvents();
 
     const scraper = new Scraper(`${OPTIONS.baseUrl}${OPTIONS.eventsPath}`, OPTIONS.timeout);
     await scraper.init();
-    const events = await scraper.getEvents();
-    await scraper.destroy();
 
-    await database.setEvents(events);
-    await database.close();
+    const scheduler = new Scheduler({
+        host: OPTIONS.redis.host,
+        port: OPTIONS.redis.port
+    }, OPTIONS.scrapingCron, database, scraper);
+    await scheduler.startScheduler();
 }
 main();

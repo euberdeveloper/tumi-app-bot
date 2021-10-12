@@ -10,7 +10,8 @@ export default {
     eventsPath: process.env.EVENTS_PATH ?? '/events',
     timeout: process.env.TIMEOUT !== undefined ? +process.env.TIMEOUT : 30000,
     redis: {
-        host: process.env.REDIS_HOST,
-        port: process.env.REDIS_PORT !== undefined ? +process.env.REDIS_PORT : undefined
-    }
+        host: process.env.REDIS_HOST ?? 'localhost',
+        port: process.env.REDIS_PORT !== undefined ? +process.env.REDIS_PORT : 9379
+    },
+    scrapingCron: process.env.SCRAPING_CRON ?? '* * * * *'
 };
