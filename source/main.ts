@@ -1,3 +1,5 @@
+import './utils/moduleAlias';
+
 import { Scraper } from '@/utils/scraper';
 import OPTIONS from '@/options';
 

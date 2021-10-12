@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@types/date-and-time": "^0.13.0",
+    "@types/module-alias": "^2.0.1",
     "typescript": "^4.4.3"
   }
 }
