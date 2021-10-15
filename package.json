@@ -1,6 +1,6 @@
 {
   "name": "tumi-app-bot",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A telegram bot to receive a message when there is a new spot for tumi events",
   "main": "dist/main.js",
   "scripts": {
@@ -29,8 +29,8 @@
     "bull": "^3.29.2",
     "date-and-time": "^2.0.1",
     "dotenv": "^10.0.0",
+    "graphql-request": "^3.6.0",
     "module-alias": "^2.2.2",
-    "puppeteer": "^10.4.0",
     "redis": "^3.1.2",
     "telegraf": "^4.4.2"
   },
