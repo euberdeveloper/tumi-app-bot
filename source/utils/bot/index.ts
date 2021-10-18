@@ -18,16 +18,25 @@ export class Bot {
 
     private getMessageFromDifference(difference: Difference): string {
         const { type, event } = difference;
+
+        const title = event.title;
+        const date = new Date(event.start);
+        const dateTxt = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} - ${date.getHours()}:${date.getMinutes()}`;
+        const totSpots = event.participantLimit;
+        const availableSpots = event.participantLimit - event.partecipantsRegistered;
+        const price = event.price ? `${event.price}€` : '0€';
+        const link = `https://tumi.esn.world/events/${event.id}`;
+
         switch (type) {
             case 'new':
                 return `
-                There is a new event "${event.title}", on ${event.timestamp.toISOString()} with ${event.spots} spots available.
-                The link to the event is ${event.link}
+                There is a new event "${title}", on ${dateTxt} with ${availableSpots}/${totSpots} spots available, with price ${price}
+                The link to the event is ${link}
                 `;
             case 'set_free':
                 return `
-                The event "${event.title}", on ${event.timestamp.toISOString()} is again available, with ${event.spots} spots.
-                The link to the event is ${event.link}
+                The event "${event.title}", on ${dateTxt} is again available, with ${availableSpots}/${totSpots} spots, with price ${price}.
+                The link to the event is ${link}
                 `;
         }
     }

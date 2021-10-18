@@ -1,8 +1,12 @@
 export interface TumiEvent {
-    timestamp: Date;
+    id: string;
     title: string;
-    spots: number;
-    link: string;
+    start: string;
+    end: string;
+    price: string | null;
+    discountedPrice: string | null;
+    participantLimit: number;
+    partecipantsRegistered: number;
 }
 
 export interface Difference {

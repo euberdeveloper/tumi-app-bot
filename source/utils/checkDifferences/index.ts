@@ -5,7 +5,8 @@ export function checkDifferences(oldEvents: TumiEvent[] | null, newEvents: TumiE
 
     if (oldEvents !== null) {
         for (const newEvent of newEvents) {
-            const oldEvent = oldEvents.find(event => event.link === newEvent.link);
+
+            const oldEvent = oldEvents.find(event => event.id === newEvent.id);
 
             if (!oldEvent) {
                 differences.push({
@@ -13,7 +14,7 @@ export function checkDifferences(oldEvents: TumiEvent[] | null, newEvents: TumiE
                     event: newEvent
                 })
             }
-            else if (oldEvent.spots === 0 && newEvent.spots > 0) {
+            else if (oldEvent.participantLimit !== null && newEvent.participantLimit !== null && oldEvent.participantLimit - oldEvent.partecipantsRegistered <= 0 && newEvent.participantLimit - newEvent.partecipantsRegistered > 0) {
                 differences.push({
                     type: 'set_free',
                     event: newEvent

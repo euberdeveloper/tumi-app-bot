@@ -6,9 +6,7 @@ dotenv.config({
 });
 
 export default {
-    baseUrl: process.env.BASE_URL ?? 'https://tumi.esn.world',
-    eventsPath: process.env.EVENTS_PATH ?? '/events',
-    timeout: process.env.TIMEOUT !== undefined ? +process.env.TIMEOUT : 30000,
+    apiUrl: process.env.API_URL ?? 'https://tumi.esn.world/graphql',
     redis: {
         host: process.env.REDIS_HOST ?? 'localhost',
         port: process.env.REDIS_PORT !== undefined ? +process.env.REDIS_PORT : 9379
