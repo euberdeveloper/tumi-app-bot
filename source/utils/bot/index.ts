@@ -9,11 +9,23 @@ export class Bot {
     private database: Database;
 
     private init(): void {
+        const helpText = `Welcome, I am the bot that will notify you if a new tumi event arrives or if spots are set free!
+
+Commands:
+● <b>/start</b> will register you to the newsletter
+● <b>/stop</b> will unregister you from the newsletter
+● <b>/help</b> will show you this message again
+        `;
+
         this.bot.start(async ctx => {
             await this.database.pushChat(ctx.chat.id);
-            return ctx.reply('Welcome, I am the bot that will notify you if a new tumi event arrives or if spots are set free!');
+            return ctx.reply(helpText, { parse_mode: 'HTML' });
         });
-        this.bot.help(ctx => ctx.reply('Welcome, I am the bot that will notify you if a new tumi event arrives or if spots are set free!'));
+        this.bot.command('stop', async ctx => {
+            await this.database.removeChat(ctx.chat.id);
+            return ctx.reply('You have been deregistered. If you want to start receiving notifications again, use the <b>/start</b> command', { parse_mode: 'HTML' });
+        });
+        this.bot.help(ctx => ctx.reply(helpText, { parse_mode: 'HTML' }));
         this.bot.launch();
     }
 

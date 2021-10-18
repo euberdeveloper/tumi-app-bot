@@ -12,6 +12,7 @@ export class Database {
     private getAsync: (key: string) => Promise<string | null>;
     private setAsync: (key: string, value: string) => Promise<unknown>;
     private saddAsync: (key: string, ...args: string[]) => Promise<number>;
+    private sremAsync: (key: string, value: string) => Promise<unknown>;
     private smembersAsync: (key: string) => Promise<string[]>;
     private quitAsync: () => Promise<'OK'>;
 
@@ -20,6 +21,7 @@ export class Database {
         this.getAsync = promisify(this.client.get).bind(this.client);
         this.setAsync = promisify(this.client.set).bind(this.client);
         this.saddAsync = promisify(this.client.sadd).bind(this.client);
+        this.sremAsync = promisify(this.client.srem).bind(this.client);
         this.smembersAsync = promisify(this.client.smembers).bind(this.client);
         this.quitAsync = promisify(this.client.quit).bind(this.client);
     }
@@ -41,6 +43,10 @@ export class Database {
 
     public async pushChat(chatId: number): Promise<void> {
         await this.saddAsync(Database.CHATS_KEY, '' + chatId);
+    }
+
+    public async removeChat(chatId: number): Promise<void> {
+        await this.sremAsync(Database.CHATS_KEY, '' + chatId);
     }
 
     public async getChats(): Promise<number[]> {
