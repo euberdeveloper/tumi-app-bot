@@ -1,6 +1,6 @@
 import { gql, GraphQLClient } from 'graphql-request';
 
-import { TumiEvent } from '@/types';
+import { GraphqlResponse, TumiEvent } from '@/types';
 
 export class Scraper {
 
@@ -23,14 +23,12 @@ export class Scraper {
 
 
     public constructor(apiUrl: string) {
-        console.log(apiUrl)
         this.client = new GraphQLClient(apiUrl);
     }
 
     public async getEvents(): Promise<TumiEvent[]> {
-        const result = await this.client.request<TumiEvent[]>(Scraper.QUERY);
-        console.log(result);
-        return result;
+        const result = await this.client.request<GraphqlResponse>(Scraper.QUERY);
+        return result.events;
     }
 
 }
