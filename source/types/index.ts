@@ -1,3 +1,7 @@
+export interface GraphqlResponse {
+    events: TumiEvent[];
+}
+
 export interface TumiEvent {
     id: string;
     title: string;
