@@ -11,16 +11,16 @@ export class Database {
 
     private getAsync: (key: string) => Promise<string | null>;
     private setAsync: (key: string, value: string) => Promise<unknown>;
-    private rpushAsync: (key: string, ...args: string[]) => Promise<unknown>;
-    private lrangeAsync: (key: string, from: number, to: number) => Promise<string[]>;
+    private saddAsync: (key: string, ...args: string[]) => Promise<number>;
+    private smembersAsync: (key: string) => Promise<string[]>;
     private quitAsync: () => Promise<'OK'>;
 
     constructor(options: redis.ClientOpts) {
         this.client = redis.createClient(options);
         this.getAsync = promisify(this.client.get).bind(this.client);
         this.setAsync = promisify(this.client.set).bind(this.client);
-        this.rpushAsync = promisify(this.client.rpush).bind(this.client);
-        this.lrangeAsync = promisify(this.client.lrange).bind(this.client);
+        this.saddAsync = promisify(this.client.sadd).bind(this.client);
+        this.smembersAsync = promisify(this.client.smembers).bind(this.client);
         this.quitAsync = promisify(this.client.quit).bind(this.client);
     }
 
@@ -40,11 +40,11 @@ export class Database {
     }
 
     public async pushChat(chatId: number): Promise<void> {
-        await this.rpushAsync(Database.CHATS_KEY, '' + chatId);
+        await this.saddAsync(Database.CHATS_KEY, '' + chatId);
     }
 
     public async getChats(): Promise<number[]> {
-        const chatIds = await this.lrangeAsync(Database.CHATS_KEY, 0, -1);
+        const chatIds = await this.smembersAsync(Database.CHATS_KEY);
         return chatIds.map(id => +id);
     }
 
