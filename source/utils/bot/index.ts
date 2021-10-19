@@ -14,6 +14,7 @@ export class Bot {
 Commands:
 ● <b>/start</b> will register you to the newsletter
 ● <b>/stop</b> will unregister you from the newsletter
+● <b>/author</b> will show you information about the author and the source code
 ● <b>/help</b> will show you this message again
         `;
 
@@ -24,6 +25,9 @@ Commands:
         this.bot.command('stop', async ctx => {
             await this.database.removeChat(ctx.chat.id);
             return ctx.reply('You have been deregistered. If you want to start receiving notifications again, use the <b>/start</b> command', { parse_mode: 'HTML' });
+        });
+        this.bot.command('author', ctx => {
+            return ctx.reply('The author of this bot is <i>Eugenio Berretta</i>, the bot is open source and visible at <i>https://github.com/euberdeveloper/tumi-app-bot</i>.', { parse_mode: 'HTML' });
         });
         this.bot.help(ctx => ctx.reply(helpText, { parse_mode: 'HTML' }));
         this.bot.launch();
