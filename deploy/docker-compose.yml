@@ -16,5 +16,12 @@ services:
     depends_on:
       - redis
 
+  watchtower:
+    image: containrrr/watchtower
+    env_file:
+      - ./config/watchtower.env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
 volumes:
   redis-data:
