@@ -10,7 +10,7 @@ export interface TumiEvent {
     price: string | null;
     discountedPrice: string | null;
     participantLimit: number;
-    partecipantsRegistered: number;
+    partecipantsRegistered: number | undefined;
 }
 
 export interface Difference {

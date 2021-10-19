@@ -14,7 +14,7 @@ export function checkDifferences(oldEvents: TumiEvent[] | null, newEvents: TumiE
                     event: newEvent
                 })
             }
-            else if (oldEvent.participantLimit !== null && newEvent.participantLimit !== null && oldEvent.participantLimit - oldEvent.partecipantsRegistered <= 0 && newEvent.participantLimit - newEvent.partecipantsRegistered > 0) {
+            else if (oldEvent.participantLimit !== null && newEvent.participantLimit !== null && oldEvent.participantLimit - (oldEvent.partecipantsRegistered ?? 0) <= 0 && newEvent.participantLimit - (newEvent.partecipantsRegistered ?? 0) > 0) {
                 differences.push({
                     type: 'set_free',
                     event: newEvent
