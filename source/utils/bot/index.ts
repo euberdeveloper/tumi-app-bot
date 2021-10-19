@@ -3,6 +3,7 @@ import * as dateAndTime from 'date-and-time';
 
 import { Database } from '@/utils/database';
 import { Difference } from '@/types';
+import options from '@/options';
 
 export class Bot {
     private bot: Telegraf;
@@ -15,6 +16,7 @@ Commands:
 ● <b>/start</b> will register you to the newsletter
 ● <b>/stop</b> will unregister you from the newsletter
 ● <b>/author</b> will show you information about the author and the source code
+● <b>/version</b> will show you the bot version
 ● <b>/help</b> will show you this message again
         `;
 
@@ -28,6 +30,9 @@ Commands:
         });
         this.bot.command('author', ctx => {
             return ctx.reply('The author of this bot is <i>Eugenio Berretta</i>, the bot is open source and visible at <i>https://github.com/euberdeveloper/tumi-app-bot</i>.', { parse_mode: 'HTML' });
+        });
+        this.bot.command('version', ctx => {
+            return ctx.reply(`The version of this bot is <b>${options.version}</b>`, { parse_mode: 'HTML' });
         });
         this.bot.help(ctx => ctx.reply(helpText, { parse_mode: 'HTML' }));
         this.bot.launch();

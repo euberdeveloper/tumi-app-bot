@@ -6,6 +6,7 @@
             "ES2021",
             "DOM"
         ],
+        "resolveJsonModule": true,
         "sourceMap": true,
         "outDir": "../dist",
         "baseUrl": ".",

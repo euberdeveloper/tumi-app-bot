@@ -1,6 +1,8 @@
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
+const packageJson = require(path.join(process.cwd(), 'package.json'));
+
 dotenv.config({
     path: path.join(process.cwd(), '.env')
 });
@@ -14,5 +16,6 @@ export default {
     scrapingCron: process.env.SCRAPING_CRON ?? '* * * * *',
     telegram: {
         botToken: process.env.TELEGRAM_BOT_TOKEN as string
-    }
+    },
+    version: packageJson.version
 };
