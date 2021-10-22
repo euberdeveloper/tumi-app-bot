@@ -1,9 +1,12 @@
 import { Telegraf } from 'telegraf';
+import { Logger } from 'euberlog';
 import * as dateAndTime from 'date-and-time';
 
 import { Database } from '@/utils/database';
 import { Difference } from '@/types';
 import options from '@/options';
+
+const logger = new Logger('bot');
 
 export class Bot {
     private bot: Telegraf;
@@ -21,20 +24,27 @@ Commands:
         `;
 
         this.bot.start(async ctx => {
+            logger.debug('Start command', ctx.chat);
             await this.database.pushChat(ctx.chat.id);
             return ctx.reply(helpText, { parse_mode: 'HTML' });
         });
         this.bot.command('stop', async ctx => {
+            logger.debug('Stop command', ctx.chat);
             await this.database.removeChat(ctx.chat.id);
             return ctx.reply('You have been deregistered. If you want to start receiving notifications again, use the <b>/start</b> command', { parse_mode: 'HTML' });
         });
         this.bot.command('author', ctx => {
+            logger.debug('Author command', ctx.chat);
             return ctx.reply('The author of this bot is <i>Eugenio Berretta</i>, the bot is open source and visible at <i>https://github.com/euberdeveloper/tumi-app-bot</i>.', { parse_mode: 'HTML' });
         });
         this.bot.command('version', ctx => {
+            logger.debug('Version command', ctx.chat);
             return ctx.reply(`The version of this bot is <b>${options.version}</b>`, { parse_mode: 'HTML' });
         });
-        this.bot.help(ctx => ctx.reply(helpText, { parse_mode: 'HTML' }));
+        this.bot.help(ctx => {
+            logger.debug('Help command', ctx.chat);
+            return ctx.reply(helpText, { parse_mode: 'HTML' })
+        });
         this.bot.launch();
     }
 
@@ -74,7 +84,12 @@ The link to the event is ${link}
         const message = this.getMessageFromDifference(difference);
         const chatIds = await this.database.getChats();
         for (const chatId of chatIds) {
-            await this.bot.telegram.sendMessage(chatId, message, { parse_mode: 'HTML' });
+            try {
+                await this.bot.telegram.sendMessage(chatId, message, { parse_mode: 'HTML' });
+            }
+            catch (error) {
+                logger.error(`Error sending message to chat ${chatId}`, error);
+            }
         }
     }
 

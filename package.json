@@ -29,6 +29,7 @@
     "bull": "^3.29.2",
     "date-and-time": "^2.0.1",
     "dotenv": "^10.0.0",
+    "euberlog": "^2.0.18",
     "graphql-request": "^3.6.0",
     "module-alias": "^2.2.2",
     "redis": "^3.1.2",

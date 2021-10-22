@@ -1,10 +1,12 @@
 import * as Bull from 'bull';
+import { Logger } from 'euberlog';
 
 import { Database } from '@/utils/database';
 import { Scraper } from '@/utils/scraper';
 import { checkDifferences } from '@/utils/checkDifferences';
 import { Bot } from '@/utils/bot';
 
+const logger = new Logger('scheduler');
 
 export class Scheduler {
     private static readonly JOB_NAME = 'scraping';
@@ -26,6 +28,7 @@ export class Scheduler {
         });
         this.scrapingCron = scrapingCron;
         this.bull.process(Scheduler.JOB_NAME, async () => {
+            logger.info('Started job');
             try {
                 const oldEvents = await database.getEvents();
                 const newEvents = await scraper.getEvents();
@@ -35,9 +38,11 @@ export class Scheduler {
                 for (const difference of differences) {
                     await bot.sendMessage(difference);
                 }
+
+                logger.success('Finished job');
             }
             catch (error) {
-                console.error(error);
+                logger.error('Error in scheduler', error);
             }
         });
     }
