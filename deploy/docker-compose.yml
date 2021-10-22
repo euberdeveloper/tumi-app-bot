@@ -9,7 +9,7 @@ services:
     command: redis-server
 
   bot:
-    image: euberdeveloper/tumi-app-bot
+    image: euberdeveloper/tumi-app-bot:latest
     restart: always
     env_file:
       - ./config/bot.env
@@ -17,7 +17,7 @@ services:
       - redis
 
   watchtower:
-    image: containrrr/watchtower
+    image: containrrr/watchtower:latest
     env_file:
       - ./config/watchtower.env
     volumes:
