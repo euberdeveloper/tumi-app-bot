@@ -56,19 +56,17 @@ Commands:
         const dateTxt = dateAndTime.format(date, 'DD/MM/YYYY HH:mm') ?? date;
         const totSpots = event.participantLimit;
         const availableSpots = event.participantLimit - (event.partecipantsRegistered ?? 0);
-        const price = event.price ? `${event.price}€` : '0€';
-        const discounted = event.discountedPrice ? `(discounted to ${event.discountedPrice}€)` : '';
         const link = `https://tumi.esn.world/events/${event.id}`;
 
         switch (type) {
             case 'new':
                 return `
-                There is a new event <b>"${title}"</b>, on <b>${dateTxt}</b> with <b>${availableSpots}</b>/${totSpots} spots available, with price <b>${price}${discounted}</b>.
+                There is a new event <b>"${title}"</b>, on <b>${dateTxt}</b> with <b>${availableSpots}</b>/${totSpots} spots available.
 The link to the event is ${link}
                 `;
             case 'set_free':
                 return `
-                The event <b>"${event.title}"</b>, on <b>${dateTxt}</b> is again available, with <b>${availableSpots}</b>/${totSpots} spots, with price <b>${price}${discounted}</b>.
+                The event <b>"${event.title}"</b>, on <b>${dateTxt}</b> is again available, with <b>${availableSpots}</b>/${totSpots} spots.
 The link to the event is ${link}
                 `;
         }

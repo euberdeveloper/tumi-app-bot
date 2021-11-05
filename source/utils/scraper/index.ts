@@ -12,8 +12,6 @@ export class Scraper {
           title
           start
           end
-          price
-          discountedPrice
           participantLimit
           participantsRegistered
         }
