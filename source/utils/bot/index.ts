@@ -13,8 +13,8 @@ export class Bot {
     private database: Database;
 
     private init(): void {
-        const helpText = `Welcome, I am the bot that will notify you if a new tumi event arrives or if spots are set free!
-
+        const welcomeText = `Welcome, I am the bot that will notify you if a new tumi event arrives or if spots are set free!`;
+        const commandsText = `
 Commands:
 ● <b>/start</b> will register you to the newsletter
 ● <b>/stop</b> will unregister you from the newsletter
@@ -23,10 +23,19 @@ Commands:
 ● <b>/help</b> will show you this message again
         `;
 
+        const helpText = `${welcomeText}
+        
+${commandsText}`
+        const startText = `${welcomeText}
+
+You have just been registered to the newsletter.
+
+${commandsText}`
+
         this.bot.start(async ctx => {
             logger.debug('Start command', ctx.chat);
             await this.database.pushChat(ctx.chat.id);
-            return ctx.reply(helpText, { parse_mode: 'HTML' });
+            return ctx.reply(startText, { parse_mode: 'HTML' });
         });
         this.bot.command('stop', async ctx => {
             logger.debug('Stop command', ctx.chat);
