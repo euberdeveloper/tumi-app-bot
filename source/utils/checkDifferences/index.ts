@@ -1,6 +1,6 @@
-import { Difference, TumiEvent } from "@/types";
+import { Difference, HandledTumiEvent } from "@/types";
 
-export function checkDifferences(oldEvents: TumiEvent[] | null, newEvents: TumiEvent[]): Difference[] {
+export function checkDifferences(oldEvents: HandledTumiEvent[] | null, newEvents: HandledTumiEvent[]): Difference[] {
     const differences: Difference[] = [];
 
     if (oldEvents !== null) {
@@ -17,6 +17,18 @@ export function checkDifferences(oldEvents: TumiEvent[] | null, newEvents: TumiE
             else if (oldEvent.participantLimit !== null && newEvent.participantLimit !== null && oldEvent.participantLimit - (oldEvent.partecipantsRegistered ?? 0) <= 0 && newEvent.participantLimit - (newEvent.partecipantsRegistered ?? 0) > 0) {
                 differences.push({
                     type: 'set_free',
+                    event: newEvent
+                })
+            }
+            else if (!oldEvent.registrationStarted && newEvent.registrationStarted) {
+                differences.push({
+                    type: 'registration_started',
+                    event: newEvent
+                })
+            }
+            else if (!oldEvent.registrationStartsSoon && newEvent.registrationStartsSoon) {
+                differences.push({
+                    type: 'registration_starts_soon',
                     event: newEvent
                 })
             }
