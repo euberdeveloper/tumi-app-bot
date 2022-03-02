@@ -33,6 +33,6 @@ async function main(): Promise<void> {
     await scheduler.startScheduler();
     logger.debug('Scheduler instance created');
 
-    logger.success('Log started succesfully!!!');
+    logger.success('Bot started succesfully!!!');
 }
 main();
