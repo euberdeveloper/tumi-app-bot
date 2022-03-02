@@ -14,6 +14,9 @@ export class Scheduler {
     private readonly queueName = 'jobs';
     private readonly bull: Bull.Queue;
     private readonly scrapingCron: string;
+    private readonly database: Database;
+    private readonly scraper: Scraper;
+    private readonly bot: Bot;
 
     private async removeOldCrons(bull: Bull.Queue, jobName: string): Promise<void> {
         const oldJobsKeys = (await bull.getRepeatableJobs()).filter(j => j.name === jobName).map(j => j.key);
@@ -22,29 +25,39 @@ export class Scheduler {
         }
     }
 
+
     constructor(dbOptions: { host: string, port: number }, scrapingCron: string, database: Database, scraper: Scraper, bot: Bot) {
         this.bull = new Bull(this.queueName, {
             redis: dbOptions
         });
         this.scrapingCron = scrapingCron;
-        this.bull.process(Scheduler.JOB_NAME, async () => {
-            logger.info('Started job');
-            try {
-                const oldEvents = await database.getEvents();
-                const newEvents = await scraper.getEvents();
-                await database.setEvents(newEvents);
-                const differences = checkDifferences(oldEvents, newEvents);
-                
-                for (const difference of differences) {
-                    await bot.sendMessage(difference);
-                }
+        this.database = database;
+        this.scraper = scraper;
+        this.bot = bot;
 
-                logger.success('Finished job');
-            }
-            catch (error) {
-                logger.error('Error in scheduler', error);
-            }
+        this.bull.process(Scheduler.JOB_NAME, async () => {
+            await this.executeJob();
         });
+    }
+
+    public async executeJob(): Promise<void> {
+        logger.info('Started job');
+        try {
+            const oldEvents = await this.database.getEvents();
+            console.log(oldEvents)
+            const newEvents = await this.scraper.getEvents();
+            await this.database.setEvents(newEvents);
+            const differences = checkDifferences(oldEvents, newEvents);
+
+            for (const difference of differences) {
+                await this.bot.sendMessage(difference);
+            }
+
+            logger.success('Finished job');
+        }
+        catch (error) {
+            logger.error('Error in scheduler', error);
+        }
     }
 
     public async startScheduler(): Promise<void> {
