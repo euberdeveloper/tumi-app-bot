@@ -29,10 +29,7 @@ export class Database {
     public async getEvents(): Promise<HandledTumiEvent[] | null> {
         const jsonResponse = await this.getAsync(Database.EVENTS_KEY);
         return jsonResponse
-            ? JSON.parse(jsonResponse).map((event: any) => {
-                event.timestamp = new Date(event.timestamp);
-                return event;
-            })
+            ? JSON.parse(jsonResponse)
             : jsonResponse;
     }
 
