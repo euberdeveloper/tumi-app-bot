@@ -25,7 +25,6 @@ export class Scheduler {
         }
     }
 
-
     constructor(dbOptions: { host: string, port: number }, scrapingCron: string, database: Database, scraper: Scraper, bot: Bot) {
         this.bull = new Bull(this.queueName, {
             redis: dbOptions
@@ -44,7 +43,6 @@ export class Scheduler {
         logger.info('Started job');
         try {
             const oldEvents = await this.database.getEvents();
-            console.log(oldEvents)
             const newEvents = await this.scraper.getEvents();
             await this.database.setEvents(newEvents);
             const differences = checkDifferences(oldEvents, newEvents);
