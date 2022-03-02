@@ -14,6 +14,7 @@ export default {
         port: process.env.REDIS_PORT !== undefined ? +process.env.REDIS_PORT : 9379
     },
     scrapingCron: process.env.SCRAPING_CRON ?? '* * * * *',
+    registrationStartForwarning: +(process.env.REGISTRATION_START_FOR_WARNING_SECS ?? 600) * 1000,
     telegram: {
         botToken: process.env.TELEGRAM_BOT_TOKEN as string
     },

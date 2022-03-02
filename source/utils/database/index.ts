@@ -1,7 +1,7 @@
 import { promisify } from 'util';
 import * as redis from 'redis';
 
-import { TumiEvent } from '@/types';
+import { HandledTumiEvent } from '@/types';
 
 export class Database {
     private static readonly EVENTS_KEY = 'tumiEvents';
@@ -26,17 +26,14 @@ export class Database {
         this.quitAsync = promisify(this.client.quit).bind(this.client);
     }
 
-    public async getEvents(): Promise<TumiEvent[] | null> {
+    public async getEvents(): Promise<HandledTumiEvent[] | null> {
         const jsonResponse = await this.getAsync(Database.EVENTS_KEY);
         return jsonResponse
-            ? JSON.parse(jsonResponse).map((event: any) => {
-                event.timestamp = new Date(event.timestamp);
-                return event;
-            })
+            ? JSON.parse(jsonResponse)
             : jsonResponse;
     }
 
-    public async setEvents(events: TumiEvent[]): Promise<void> {
+    public async setEvents(events: HandledTumiEvent[]): Promise<void> {
         const jsonBody = JSON.stringify(events);
         await this.setAsync(Database.EVENTS_KEY, jsonBody);
     }
