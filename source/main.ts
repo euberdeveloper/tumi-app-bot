@@ -20,7 +20,7 @@ async function main(): Promise<void> {
     });
     logger.debug('Database instance created');
 
-    const scraper = new Scraper(OPTIONS.apiUrl);
+    const scraper = new Scraper(OPTIONS.apiUrl, OPTIONS.registrationStartForwarning);
     logger.debug('Scraper instance created');
 
     const bot = new Bot(OPTIONS.telegram.botToken, database);
