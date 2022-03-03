@@ -19,9 +19,9 @@ async function executeTask(indentation: number): Promise<void> {
         logger.debug('Starting...');
 
         database = new Database({
-            host: OPTIONS.redis.host,
-            port: OPTIONS.redis.port
+            url: OPTIONS.redis.url
         });
+        await database.open();
         logger.debug('Database instance created');
 
         const events = await database.getEvents();
