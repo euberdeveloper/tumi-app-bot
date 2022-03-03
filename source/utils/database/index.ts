@@ -12,6 +12,7 @@ export class Database {
 
     private readonly getAsync: (key: string) => Promise<string | null>;
     private readonly setAsync: (key: string, value: string) => Promise<unknown>;
+    private readonly delAsync: (...keys: string[]) => Promise<unknown>;
     private readonly saddAsync: (key: string, ...args: string[]) => Promise<number>;
     private readonly sremAsync: (key: string, value: string) => Promise<unknown>;
     private readonly smembersAsync: (key: string) => Promise<string[]>;
@@ -21,6 +22,7 @@ export class Database {
         this.client = redis.createClient(options);
         this.getAsync = promisify(this.client.get).bind(this.client);
         this.setAsync = promisify(this.client.set).bind(this.client);
+        this.delAsync = promisify(this.client.del).bind(this.client);
         this.saddAsync = promisify(this.client.sadd).bind(this.client);
         this.sremAsync = promisify(this.client.srem).bind(this.client);
         this.smembersAsync = promisify(this.client.smembers).bind(this.client);
@@ -35,6 +37,10 @@ export class Database {
     public async setEvents(events: HandledTumiEvent[]): Promise<void> {
         const jsonBody = JSON.stringify(events);
         await this.setAsync(Database.EVENTS_KEY, jsonBody);
+    }
+
+    public async resetEvents(): Promise<void> {
+        await this.delAsync(Database.EVENTS_KEY);
     }
 
     public async pushChat(chatId: number): Promise<void> {
