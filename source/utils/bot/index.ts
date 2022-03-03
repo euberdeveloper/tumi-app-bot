@@ -118,9 +118,8 @@ The link to the event is ${link}
 
     public async sendMessageToEveryone(message: string): Promise<void> {
         const chattIds = await this.database.getChats();
-        for (const chatId of chattIds) {
-            await this.sendMessageToChat(message, chatId);
-        }
+        const tasks = chattIds.map(async chatId => this.sendMessageToChat(message, chatId));
+        await Promise.all(tasks);
     }
 
     public async sendNotificationMessage(difference: Difference): Promise<void> {
