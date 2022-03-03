@@ -1,6 +1,6 @@
 {
   "name": "tumi-app-bot",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "description": "A telegram bot to receive a message when there is a new spot for tumi events",
   "main": "dist/main.js",
   "scripts": {

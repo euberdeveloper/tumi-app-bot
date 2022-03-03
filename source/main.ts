@@ -36,7 +36,7 @@ const logger = new Logger('main');
         scraper,
         bot
     );
-    await scheduler.startScheduler();
+    await scheduler.executeJob();
     logger.debug('Scheduler instance created');
 
     logger.success('Bot started succesfully!!!');

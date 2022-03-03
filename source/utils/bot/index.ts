@@ -2,12 +2,14 @@
 import { Telegraf } from 'telegraf';
 import { Logger } from 'euberlog';
 import * as dateAndTime from 'date-and-time';
+import * as dateAndTimeTimezone from 'date-and-time/plugin/timezone';
 
 import { Database } from '@/utils/database';
 import { Difference } from '@/types';
 import options from '@/options';
 
 const logger = new Logger('bot');
+dateAndTime.plugin(dateAndTimeTimezone);
 
 export class Bot {
     private readonly bot: Telegraf;
@@ -75,7 +77,9 @@ ${commandsText}`;
 
         const title = event.title;
         const date = new Date(event.start);
-        const dateTxt = dateAndTime.format(date, 'DD/MM/YYYY HH:mm') ?? date;
+        const dateTxt: string =
+            (dateAndTime as any).formatTZ(date, 'DD/MM/YYYY HH:mm', 'Europe/Berlin') ??
+            `${date.toLocaleString('de')} UTC`;
         const totSpots = event.participantLimit;
         const availableSpots = event.participantLimit - (event.partecipantsRegistered ?? 0);
         const link = `https://tumi.esn.world/events/${event.id}`;
