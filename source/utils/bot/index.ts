@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { Telegraf } from 'telegraf';
 import { Logger } from 'euberlog';
 import * as dateAndTime from 'date-and-time';
@@ -9,8 +10,14 @@ import options from '@/options';
 const logger = new Logger('bot');
 
 export class Bot {
-    private bot: Telegraf;
-    private database: Database;
+    private readonly bot: Telegraf;
+    private readonly database: Database;
+
+    constructor(botToken: string, database: Database) {
+        this.database = database;
+        this.bot = new Telegraf(botToken);
+        this.init();
+    }
 
     private init(): void {
         const welcomeText = `Welcome, I am the bot that will notify you if a new tumi event arrives or if spots are set free!`;
@@ -25,12 +32,12 @@ Commands:
 
         const helpText = `${welcomeText}
         
-${commandsText}`
+${commandsText}`;
         const startText = `${welcomeText}
 
 You have just been registered to the newsletter.
 
-${commandsText}`
+${commandsText}`;
 
         this.bot.start(async ctx => {
             logger.debug('Start command', ctx.chat);
@@ -40,21 +47,27 @@ ${commandsText}`
         this.bot.command('stop', async ctx => {
             logger.debug('Stop command', ctx.chat);
             await this.database.removeChat(ctx.chat.id);
-            return ctx.reply('You have been deregistered. If you want to start receiving notifications again, use the <b>/start</b> command', { parse_mode: 'HTML' });
+            return ctx.reply(
+                'You have been deregistered. If you want to start receiving notifications again, use the <b>/start</b> command',
+                { parse_mode: 'HTML' }
+            );
         });
-        this.bot.command('author', ctx => {
+        this.bot.command('author', async ctx => {
             logger.debug('Author command', ctx.chat);
-            return ctx.reply('The author of this bot is <i>Eugenio Berretta</i>, the bot is open source and visible at <i>https://github.com/euberdeveloper/tumi-app-bot</i>.', { parse_mode: 'HTML' });
+            return ctx.reply(
+                'The author of this bot is <i>Eugenio Berretta</i>, the bot is open source and visible at <i>https://github.com/euberdeveloper/tumi-app-bot</i>.',
+                { parse_mode: 'HTML' }
+            );
         });
-        this.bot.command('version', ctx => {
+        this.bot.command('version', async ctx => {
             logger.debug('Version command', ctx.chat);
             return ctx.reply(`The version of this bot is <b>${options.version}</b>`, { parse_mode: 'HTML' });
         });
-        this.bot.help(ctx => {
+        this.bot.help(async ctx => {
             logger.debug('Help command', ctx.chat);
-            return ctx.reply(helpText, { parse_mode: 'HTML' })
+            return ctx.reply(helpText, { parse_mode: 'HTML' });
         });
-        this.bot.launch();
+        void this.bot.launch();
     }
 
     private getMessageFromDifference(difference: Difference): string {
@@ -91,23 +104,15 @@ The link to the event is ${link}
         }
     }
 
-    constructor(botToken: string, database: Database) {
-        this.database = database;
-        this.bot = new Telegraf(botToken);
-        this.init();
-    }
-
     public async sendMessage(difference: Difference): Promise<void> {
         const message = this.getMessageFromDifference(difference);
         const chatIds = await this.database.getChats();
         for (const chatId of chatIds) {
             try {
                 await this.bot.telegram.sendMessage(chatId, message, { parse_mode: 'HTML' });
-            }
-            catch (error) {
+            } catch (error) {
                 logger.error(`Error sending message to chat ${chatId}`, error);
             }
         }
     }
-
 }

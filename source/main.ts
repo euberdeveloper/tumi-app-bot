@@ -11,7 +11,7 @@ import OPTIONS from '@/options';
 
 const logger = new Logger('main');
 
-async function main(): Promise<void> {
+(async function () {
     logger.info('Starting...');
 
     const database = new Database({
@@ -26,13 +26,18 @@ async function main(): Promise<void> {
     const bot = new Bot(OPTIONS.telegram.botToken, database);
     logger.debug('Bot instance created');
 
-    const scheduler = new Scheduler({
-        host: OPTIONS.redis.host,
-        port: OPTIONS.redis.port
-    }, OPTIONS.scrapingCron, database, scraper, bot);
+    const scheduler = new Scheduler(
+        {
+            host: OPTIONS.redis.host,
+            port: OPTIONS.redis.port
+        },
+        OPTIONS.scrapingCron,
+        database,
+        scraper,
+        bot
+    );
     await scheduler.startScheduler();
     logger.debug('Scheduler instance created');
 
     logger.success('Bot started succesfully!!!');
-}
-main();
+})();

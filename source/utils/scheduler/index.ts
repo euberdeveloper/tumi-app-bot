@@ -18,14 +18,13 @@ export class Scheduler {
     private readonly scraper: Scraper;
     private readonly bot: Bot;
 
-    private async removeOldCrons(bull: Bull.Queue, jobName: string): Promise<void> {
-        const oldJobsKeys = (await bull.getRepeatableJobs()).filter(j => j.name === jobName).map(j => j.key);
-        for (const oldJobKey of oldJobsKeys) {
-            await bull.removeRepeatableByKey(oldJobKey);
-        }
-    }
-
-    constructor(dbOptions: { host: string, port: number }, scrapingCron: string, database: Database, scraper: Scraper, bot: Bot) {
+    constructor(
+        dbOptions: { host: string; port: number },
+        scrapingCron: string,
+        database: Database,
+        scraper: Scraper,
+        bot: Bot
+    ) {
         this.bull = new Bull(this.queueName, {
             redis: dbOptions
         });
@@ -34,9 +33,17 @@ export class Scheduler {
         this.scraper = scraper;
         this.bot = bot;
 
-        this.bull.process(Scheduler.JOB_NAME, async () => {
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        void this.bull.process(Scheduler.JOB_NAME, async () => {
             await this.executeJob();
         });
+    }
+
+    private async removeOldCrons(bull: Bull.Queue, jobName: string): Promise<void> {
+        const oldJobsKeys = (await bull.getRepeatableJobs()).filter(j => j.name === jobName).map(j => j.key);
+        for (const oldJobKey of oldJobsKeys) {
+            await bull.removeRepeatableByKey(oldJobKey);
+        }
     }
 
     public async executeJob(): Promise<void> {
@@ -52,8 +59,7 @@ export class Scheduler {
             }
 
             logger.success('Finished job');
-        }
-        catch (error) {
+        } catch (error) {
             logger.error('Error in scheduler', error);
         }
     }
