@@ -1,6 +1,6 @@
 {
   "name": "tumi-app-bot",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "description": "A telegram bot to receive a message when there is a new spot for tumi events",
   "main": "dist/main.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "pretranspile:scripts": "shx rm -rf dist/scripts",
     "transpile:scripts": "tsc -p scripts",
     "transpile": "npm run transpile:source && npm run transpile:scripts",
-    "start": "node dist/main",
+    "start": "node dist/bot/main",
     "serve": "npm run transpile:source && npm start",
     "lint:scripts": "eslint scripts --ext ts --format codeframe",
     "lint:scripts:fix": "eslint scripts --ext ts --format codeframe --fix",
@@ -18,7 +18,11 @@
     "lint": "npm run lint:source && npm run lint:scripts",
     "lint:fix": "npm run lint:source:fix && npm run lint:scripts:fix",
     "scripts:remove-events": "node dist/scripts/scripts/removeEvents",
-    "scripts:print-events": "node dist/scripts/scripts/printEvents"
+    "scripts:print-events": "node dist/scripts/scripts/printEvents",
+    "scripts:print-chats": "node dist/scripts/scripts/printChats",
+    "scripts:remove-chats": "node dist/scripts/scripts/removeChats",
+    "scripts:import-chats": "node dist/scripts/scripts/importChats"
+
   },
   "repository": {
     "type": "git",
@@ -43,6 +47,7 @@
     "dotenv": "^10.0.0",
     "euberlog": "^2.0.18",
     "graphql-request": "^3.6.0",
+    "minimist": "^1.2.5",
     "module-alias": "^2.2.2",
     "redis": "^3.1.2",
     "telegraf": "^4.4.2"
@@ -51,6 +56,7 @@
     "@euberdeveloper/eslint-plugin": "^1.2.2",
     "@types/bull": "^3.15.5",
     "@types/date-and-time": "^0.13.0",
+    "@types/minimist": "^1.2.2",
     "@types/module-alias": "^2.0.1",
     "@types/redis": "^2.8.32",
     "@typescript-eslint/eslint-plugin": "^5.13.0",

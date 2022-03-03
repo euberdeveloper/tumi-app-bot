@@ -8,15 +8,14 @@ import OPTIONS from '@/options';
 
 const args = minimist(process.argv.slice(2));
 const logger = new Logger({
-    scope: 'printEvents',
-    debug: args.debug === true
+    scope: 'removeChats'
 });
 
-async function executeTask(indentation: number): Promise<void> {
+async function executeTask(): Promise<void> {
     let database: Database | null = null;
 
     try {
-        logger.debug('Starting...');
+        logger.info('Starting...');
 
         database = new Database({
             host: OPTIONS.redis.host,
@@ -24,10 +23,8 @@ async function executeTask(indentation: number): Promise<void> {
         });
         logger.debug('Database instance created');
 
-        const events = await database.getEvents();
-        logger.debug('The events are: ');
-
-        console.log(JSON.stringify(events, null, indentation));
+        await database.resetChats();
+        logger.success('The chats have been removed');
     } catch (error: any) {
         logger.error(error);
     } finally {
@@ -41,16 +38,12 @@ async function executeTask(indentation: number): Promise<void> {
     try {
         if (args.help) {
             console.log(`
-Usage: npm run scripts:print-events -- [--debug] [--help] [--pretty boolean|number]
-Prints the events of the database as a json in the stdout.
+Usage: npm run scripts:remove-chats -- [--help]
+Removes the chats in the database.
 If the parameter --help is passed, the help is printed.
-If the parameter --debug is passed, there will also be a debug log.
-If the parameter --pretty is passed, the output will be pretty printed (a number specifies the indentation, which is 2 by default).
             `);
         } else {
-            const indentation =
-                args.pretty === undefined ? 0 : typeof args.pretty === 'number' ? args.pretty : args.pretty ? 2 : 0;
-            await executeTask(indentation);
+            await executeTask();
         }
     } catch (error: any) {
         logger.error(error);

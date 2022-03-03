@@ -8,7 +8,7 @@ import OPTIONS from '@/options';
 
 const args = minimist(process.argv.slice(2));
 const logger = new Logger({
-    scope: 'printEvents',
+    scope: 'printChats',
     debug: args.debug === true
 });
 
@@ -24,10 +24,10 @@ async function executeTask(indentation: number): Promise<void> {
         });
         logger.debug('Database instance created');
 
-        const events = await database.getEvents();
-        logger.debug('The events are: ');
+        const chats = await database.getChats();
+        logger.debug('The chats are: ');
 
-        console.log(JSON.stringify(events, null, indentation));
+        console.log(JSON.stringify(chats, null, indentation));
     } catch (error: any) {
         logger.error(error);
     } finally {
@@ -41,8 +41,8 @@ async function executeTask(indentation: number): Promise<void> {
     try {
         if (args.help) {
             console.log(`
-Usage: npm run scripts:print-events -- [--debug] [--help] [--pretty boolean|number]
-Prints the events of the database as a json in the stdout.
+Usage: npm run scripts:print-chats -- [--debug] [--help] [--pretty boolean|number]
+Prints the chats of the database as a json in the stdout.
 If the parameter --help is passed, the help is printed.
 If the parameter --debug is passed, there will also be a debug log.
 If the parameter --pretty is passed, the output will be pretty printed (a number specifies the indentation, which is 2 by default).
