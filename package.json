@@ -18,7 +18,11 @@
     "lint": "npm run lint:source && npm run lint:scripts",
     "lint:fix": "npm run lint:source:fix && npm run lint:scripts:fix",
     "scripts:remove-events": "node dist/scripts/scripts/removeEvents",
-    "scripts:print-events": "node dist/scripts/scripts/printEvents"
+    "scripts:print-events": "node dist/scripts/scripts/printEvents",
+    "scripts:print-chats": "node dist/scripts/scripts/printChats",
+    "scripts:remove-chats": "node dist/scripts/scripts/removeChats",
+    "scripts:import-chats": "node dist/scripts/scripts/importChats"
+
   },
   "repository": {
     "type": "git",

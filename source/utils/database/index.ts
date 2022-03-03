@@ -51,6 +51,16 @@ export class Database {
         await this.sremAsync(Database.CHATS_KEY, String(chatId));
     }
 
+    public async resetChats(): Promise<void> {
+        await this.delAsync(Database.CHATS_KEY);
+    }
+
+    public async importChats(chats: number[]): Promise<void> {
+        for (const chatId of chats) {
+            await this.pushChat(chatId);
+        }
+    }
+
     public async getChats(): Promise<number[]> {
         const chatIds = await this.smembersAsync(Database.CHATS_KEY);
         return chatIds.map(id => +id);
