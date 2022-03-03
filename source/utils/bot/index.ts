@@ -108,7 +108,7 @@ The link to the event is ${link}
         }
     }
 
-    public async sendMessage(difference: Difference): Promise<void> {
+    public async sendNotificationMessage(difference: Difference): Promise<void> {
         const message = this.getMessageFromDifference(difference);
         const chatIds = await this.database.getChats();
         for (const chatId of chatIds) {

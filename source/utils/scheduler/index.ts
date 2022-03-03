@@ -5,7 +5,6 @@ import { Database } from '@/utils/database';
 import { Scraper } from '@/utils/scraper';
 import { checkDifferences } from '@/utils/checkDifferences';
 import { Bot } from '@/utils/bot';
-import { Difference } from '@/types';
 
 const logger = new Logger('scheduler');
 
@@ -53,24 +52,10 @@ export class Scheduler {
             const oldEvents = await this.database.getEvents();
             const newEvents = await this.scraper.getEvents();
             await this.database.setEvents(newEvents);
-            // const differences = checkDifferences(oldEvents, newEvents);
-            const differences: Difference[] = [
-                {
-                    event: {
-                        id: 'pippo',
-                        start: '2020-01-01T00:00:00.000Z',
-                        end: '2020-01-01T02:00:00',
-                        partecipantsRegistered: 20,
-                        participantLimit: 25,
-                        registrationStart: '2020-01-01T00:00:00.000Z',
-                        title: 'Pippo'
-                    },
-                    type: 'new'
-                }
-            ];
+            const differences = checkDifferences(oldEvents, newEvents);
 
             for (const difference of differences) {
-                await this.bot.sendMessage(difference);
+                await this.bot.sendNotificationMessage(difference);
             }
 
             logger.success('Finished job');
