@@ -1,6 +1,6 @@
 {
   "name": "tumi-app-bot",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "A telegram bot to receive a message when there is a new spot for tumi events",
   "main": "dist/main.js",
   "scripts": {
@@ -22,7 +22,6 @@
     "scripts:print-chats": "node dist/scripts/scripts/printChats",
     "scripts:remove-chats": "node dist/scripts/scripts/removeChats",
     "scripts:import-chats": "node dist/scripts/scripts/importChats"
-
   },
   "repository": {
     "type": "git",
@@ -41,24 +40,13 @@
     "url": "https://github.com/euberdeveloper/tumi-app-bot/issues"
   },
   "homepage": "https://github.com/euberdeveloper/tumi-app-bot#readme",
-  "dependencies": {
-    "bull": "^3.29.2",
-    "date-and-time": "^2.0.1",
-    "dotenv": "^10.0.0",
-    "euberlog": "^2.0.18",
-    "graphql-request": "^3.6.0",
-    "minimist": "^1.2.5",
-    "module-alias": "^2.2.2",
-    "redis": "^3.1.2",
-    "telegraf": "^4.4.2"
-  },
   "devDependencies": {
     "@euberdeveloper/eslint-plugin": "^1.2.2",
-    "@types/bull": "^3.15.5",
+    "@types/bull": "^3.15.8",
     "@types/date-and-time": "^0.13.0",
     "@types/minimist": "^1.2.2",
     "@types/module-alias": "^2.0.1",
-    "@types/redis": "^2.8.32",
+    "@types/redis": "^4.0.11",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
     "eslint": "^8.10.0",
@@ -67,9 +55,19 @@
     "eslint-formatter-codeframe": "^7.32.1",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-unicorn": "^41.0.0",
-    "graphql": "^15.6.1",
     "prettier": "^2.5.1",
     "shx": "^0.3.4",
-    "typescript": "^4.4.3"
+    "typescript": "^4.6.2"
+  },
+  "dependencies": {
+    "bull": "^4.7.0",
+    "date-and-time": "^2.2.1",
+    "dotenv": "^16.0.0",
+    "euberlog": "^2.1.0",
+    "graphql-request": "^4.0.0",
+    "minimist": "^1.2.5",
+    "module-alias": "^2.2.2",
+    "redis": "^4.0.4",
+    "telegraf": "^4.7.0"
   }
 }

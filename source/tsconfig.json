@@ -1,11 +1,12 @@
 {
     "compilerOptions": {
         "strict": true,
-        "target": "es5",
+        "target": "ES5",
         "lib": [
             "ES2021",
             "DOM"
         ],
+        "skipLibCheck": true,
         "resolveJsonModule": true,
         "sourceMap": true,
         "baseUrl": ".",

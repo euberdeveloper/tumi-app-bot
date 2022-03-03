@@ -15,9 +15,9 @@ const logger = new Logger('main');
     logger.info('Starting...');
 
     const database = new Database({
-        host: OPTIONS.redis.host,
-        port: OPTIONS.redis.port
+        url: OPTIONS.redis.url
     });
+    await database.open();
     logger.debug('Database instance created');
 
     const scraper = new Scraper(OPTIONS.apiUrl, OPTIONS.registrationStartForwarning);
@@ -29,7 +29,7 @@ const logger = new Logger('main');
     const scheduler = new Scheduler(
         {
             host: OPTIONS.redis.host,
-            port: OPTIONS.redis.port
+            port: +OPTIONS.redis.port
         },
         OPTIONS.scrapingCron,
         database,
