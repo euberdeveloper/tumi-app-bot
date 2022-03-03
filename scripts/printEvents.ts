@@ -9,7 +9,7 @@ import OPTIONS from '@/options';
 const args = minimist(process.argv.slice(2));
 const logger = new Logger({
     scope: 'printEvents',
-    debug: args.debug
+    debug: args.debug === true
 });
 
 async function executeTask(indentation: number): Promise<void> {
