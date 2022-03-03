@@ -108,15 +108,27 @@ The link to the event is ${link}
         }
     }
 
+    public async sendMessageToChat(message: string, chatId: number): Promise<void> {
+        try {
+            await this.bot.telegram.sendMessage(chatId, message, { parse_mode: 'HTML' });
+        } catch (error) {
+            logger.error(`Error sending message to chat ${chatId}`, error);
+        }
+    }
+
+    public async sendMessageToEveryone(message: string): Promise<void> {
+        const chattIds = await this.database.getChats();
+        for (const chatId of chattIds) {
+            await this.sendMessageToChat(message, chatId);
+        }
+    }
+
     public async sendNotificationMessage(difference: Difference): Promise<void> {
         const message = this.getMessageFromDifference(difference);
-        const chatIds = await this.database.getChats();
-        for (const chatId of chatIds) {
-            try {
-                await this.bot.telegram.sendMessage(chatId, message, { parse_mode: 'HTML' });
-            } catch (error) {
-                logger.error(`Error sending message to chat ${chatId}`, error);
-            }
-        }
+        await this.sendMessageToEveryone(message);
+    }
+
+    public close(): void {
+        this.bot.stop();
     }
 }
