@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
 const packageJson = require(path.join(process.cwd(), 'package.json'));
 
 dotenv.config({
@@ -18,5 +19,5 @@ export default {
     telegram: {
         botToken: process.env.TELEGRAM_BOT_TOKEN as string
     },
-    version: packageJson.version
+    version: packageJson.version as string
 };

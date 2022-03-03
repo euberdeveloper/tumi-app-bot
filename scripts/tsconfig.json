@@ -1,19 +1,22 @@
 {
     "compilerOptions": {
         "strict": true,
-        "target": "es5",
+        "target": "ES5",
         "lib": [
-            "ES2021",
-            "DOM"
+            "ES2021"
         ],
-        "resolveJsonModule": true,
+        "downlevelIteration": true,
+        "skipLibCheck": true,
         "sourceMap": true,
         "baseUrl": ".",
         "paths": {
             "@/*": [
+                "../source/*"
+            ],
+            "@scripts/*": [
                 "./*"
             ]
         },
-        "outDir": "../dist/bot"
+        "outDir": "../dist/scripts"
     }
 }
