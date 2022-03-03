@@ -127,4 +127,8 @@ The link to the event is ${link}
         const message = this.getMessageFromDifference(difference);
         await this.sendMessageToEveryone(message);
     }
+
+    public close(): void {
+        this.bot.stop();
+    }
 }

@@ -1,6 +1,6 @@
 {
   "name": "tumi-app-bot",
-  "version": "3.3.3",
+  "version": "3.3.5",
   "description": "A telegram bot to receive a message when there is a new spot for tumi events",
   "main": "dist/main.js",
   "scripts": {
@@ -21,7 +21,9 @@
     "scripts:print-events": "node dist/scripts/scripts/printEvents",
     "scripts:print-chats": "node dist/scripts/scripts/printChats",
     "scripts:remove-chats": "node dist/scripts/scripts/removeChats",
-    "scripts:import-chats": "node dist/scripts/scripts/importChats"
+    "scripts:import-chats": "node dist/scripts/scripts/importChats",
+    "scripts:broadcast-message": "node dist/scripts/scripts/broadcastMessage",
+    "scripts:send-message": "node dist/scripts/scripts/sendMessage"
   },
   "repository": {
     "type": "git",
