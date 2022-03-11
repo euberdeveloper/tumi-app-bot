@@ -11,14 +11,21 @@ export interface TumiEvent {
     registrationStart: string;
     participantLimit: number;
     partecipantsRegistered: number | undefined;
+    prices: {
+        options: {
+            amount: number;
+            defaultPrice: boolean;
+        }[];
+    };
 }
 
-export interface HandledTumiEvent extends TumiEvent {
+export interface HandledTumiEvent extends Omit<TumiEvent, 'prices'> {
     registrationStartsSoon: boolean;
     registrationStarted: boolean;
+    price: number | null;
 }
 
 export interface Difference {
     type: 'new' | 'set_free' | 'registration_starts_soon' | 'registration_started';
-    event: TumiEvent;
+    event: HandledTumiEvent;
 }

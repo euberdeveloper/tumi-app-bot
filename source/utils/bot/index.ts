@@ -82,27 +82,28 @@ ${commandsText}`;
             `${date.toLocaleString('de')} UTC`;
         const totSpots = event.participantLimit;
         const availableSpots = event.participantLimit - (event.partecipantsRegistered ?? 0);
+        const price = event.price ? `${event.price}€` : '';
         const link = `https://tumi.esn.world/events/${event.id}`;
 
         switch (type) {
             case 'new':
                 return `
-                There is a new available event <b>"${title}"</b>, on <b>${dateTxt}</b> with <b>${availableSpots}</b>/${totSpots} spots available.
+                There is a new available event <b>"${title}"</b>, on <b>${dateTxt}</b> with <b>${availableSpots}</b>/${totSpots} spots available (${price}).
 The link to the event is ${link}
                 `;
             case 'set_free':
                 return `
-                The event <b>"${event.title}"</b>, on <b>${dateTxt}</b> is again available, with <b>${availableSpots}</b>/${totSpots} spots.
+                The event <b>"${event.title}"</b>, on <b>${dateTxt}</b> is again available, with <b>${availableSpots}</b>/${totSpots} spots (${price}).
 The link to the event is ${link}
                 `;
             case 'registration_starts_soon':
                 return `
-                <b>Soon</b> will start the registration for the event <b>"${event.title}"</b>, on <b>${dateTxt}</b>, with <b>${availableSpots}</b>/${totSpots} spots.
+                <b>Soon</b> will start the registration for the event <b>"${event.title}"</b>, on <b>${dateTxt}</b>, with <b>${availableSpots}</b>/${totSpots} spots (${price}).
 The link to the event is ${link}
                 `;
             case 'registration_started':
                 return `
-                <b>Registration started</b> for the event <b>"${event.title}"</b>, on <b>${dateTxt}</b>, with <b>${availableSpots}</b>/${totSpots} spots.
+                <b>Registration started</b> for the event <b>"${event.title}"</b>, on <b>${dateTxt}</b>, with <b>${availableSpots}</b>/${totSpots} spots (${price}).
 The link to the event is ${link}
                 `;
         }

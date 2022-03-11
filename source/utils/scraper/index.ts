@@ -13,6 +13,7 @@ export class Scraper {
                 registrationStart
                 participantLimit
                 participantsRegistered
+                prices
             }
         }
     `;
@@ -30,7 +31,11 @@ export class Scraper {
         return result.events.map(event => ({
             ...event,
             registrationStartsSoon: +new Date(event.registrationStart) - +now < this.registrationStartForewarning,
-            registrationStarted: new Date(event.registrationStart) <= now
+            registrationStarted: new Date(event.registrationStart) <= now,
+            prices: undefined,
+            price:
+                event.prices.options.find(option => option.defaultPrice)?.amount ??
+                (event.prices.options[0] ? event.prices.options[0].amount : null)
         }));
     }
 }
