@@ -81,8 +81,8 @@ ${commandsText}`;
             (dateAndTime as any).formatTZ(date, 'DD/MM/YYYY HH:mm', 'Europe/Berlin') ??
             `${date.toLocaleString('de')} UTC`;
         const totSpots = event.participantLimit;
-        const availableSpots = event.participantLimit - (event.partecipantsRegistered ?? 0);
-        const price = event.price ? `(${event.price}€)` : '';
+        const availableSpots = event.participantLimit - (event.participantsRegistered ?? 0);
+        const price = event.price ? `(<b>${event.price}€</b>)` : '';
         const link = `https://tumi.esn.world/events/${event.id}`;
 
         switch (type) {
