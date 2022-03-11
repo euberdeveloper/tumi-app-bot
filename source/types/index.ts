@@ -16,7 +16,7 @@ export interface TumiEvent {
             amount: number;
             defaultPrice: boolean;
         }[];
-    };
+    } | null;
 }
 
 export interface HandledTumiEvent extends Omit<TumiEvent, 'prices'> {

@@ -34,8 +34,8 @@ export class Scraper {
             registrationStarted: new Date(event.registrationStart) <= now,
             prices: undefined,
             price:
-                event.prices.options.find(option => option.defaultPrice)?.amount ??
-                (event.prices.options[0] ? event.prices.options[0].amount : null)
+                event.prices?.options.find(option => option.defaultPrice)?.amount ??
+                (event.prices?.options[0] ? event.prices.options[0].amount : null)
         }));
     }
 }
