@@ -10,7 +10,7 @@ export interface TumiEvent {
     end: string;
     registrationStart: string;
     participantLimit: number;
-    participantsRegistered: number | undefined;
+    participantRegistrationCount: number | undefined;
     prices: {
         options: {
             amount: number;

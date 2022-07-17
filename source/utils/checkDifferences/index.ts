@@ -16,8 +16,8 @@ export function checkDifferences(oldEvents: HandledTumiEvent[] | null, newEvents
             } else if (
                 oldEvent.participantLimit !== null &&
                 newEvent.participantLimit !== null &&
-                oldEvent.participantLimit - (oldEvent.participantsRegistered ?? 0) <= 0 &&
-                newEvent.participantLimit - (newEvent.participantsRegistered ?? 0) > 0
+                oldEvent.participantLimit - (oldEvent.participantRegistrationCount ?? 0) <= 0 &&
+                newEvent.participantLimit - (newEvent.participantRegistrationCount ?? 0) > 0
             ) {
                 differences.push({
                     type: 'set_free',

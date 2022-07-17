@@ -4,7 +4,7 @@ import { GraphqlResponse, HandledTumiEvent } from '@/types';
 
 export class Scraper {
     private static readonly QUERY = gql`
-        {
+        query eventList {
             events {
                 id
                 title
@@ -12,7 +12,7 @@ export class Scraper {
                 end
                 registrationStart
                 participantLimit
-                participantsRegistered
+                participantRegistrationCount
                 prices
             }
         }
@@ -21,7 +21,13 @@ export class Scraper {
     private readonly registrationStartForewarning: number;
 
     constructor(apiUrl: string, registrationStartForewarning: number) {
-        this.client = new GraphQLClient(apiUrl);
+        this.client = new GraphQLClient(apiUrl, {
+            headers: {
+                // NOTE: strange fix to avoid "Invalid URL error"
+                origin: 'http://localhost',
+                referer: 'http://localhost/'
+            }
+        });
         this.registrationStartForewarning = registrationStartForewarning;
     }
 
