@@ -9,7 +9,7 @@ export class Database {
     private readonly client: redis.RedisClientType;
 
     constructor(options: redis.RedisClientOptions) {
-        this.client = redis.createClient(options);
+        this.client = redis.createClient(options) as unknown as redis.RedisClientType;
     }
 
     public async open(): Promise<void> {
