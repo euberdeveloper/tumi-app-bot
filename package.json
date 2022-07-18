@@ -1,6 +1,6 @@
 {
   "name": "tumi-app-bot",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "description": "A telegram bot to receive a message when there is a new spot for tumi events",
   "main": "dist/main.js",
   "scripts": {
@@ -49,15 +49,6 @@
     "@types/minimist": "^1.2.2",
     "@types/module-alias": "^2.0.1",
     "@types/redis": "^4.0.11",
-    "@typescript-eslint/eslint-plugin": "^5.30.6",
-    "@typescript-eslint/parser": "^5.30.6",
-    "eslint": "^8.20.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-config-typescript": "^3.0.0",
-    "eslint-formatter-codeframe": "^7.32.1",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-unicorn": "^43.0.1",
-    "prettier": "^2.7.1",
     "shx": "^0.3.4",
     "typescript": "^4.7.4"
   },
