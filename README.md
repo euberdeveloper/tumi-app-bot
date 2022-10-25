@@ -1,6 +1,9 @@
 # [tumi-app-bot](https://t.me/tumi_app_bot)
 A telegram bot to receive a message when there is a new spot for tumi events
 
+TODO: 
+* Make bot register yourself for events you want, sending notification to complete payment in case it is needed
+
 ## Project purpose
 
 At TUM we are in about **50 000** students and a great quantity are exchange or international students. The [TUMI App](https://tumi.esn.world/events) is a pwa where students can register to events organized for international students, but there are usually **few spots available**. Events with even 300 spots can become fully booked in less than 10 minutes. This project consists in a **telegram bot** that **sends you a message** when a new event is published or when there is a new free spot in an event that was fully booked.
