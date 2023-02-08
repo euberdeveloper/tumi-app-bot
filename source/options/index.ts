@@ -19,7 +19,7 @@ export default {
         url: `redis://${redisHost}:${redisPort}`
     },
     scrapingCron: process.env.SCRAPING_CRON ?? '* * * * *',
-    registrationStartForwarning: +(process.env.REGISTRATION_START_FOR_WARNING_SECS ?? 600) * 1000,
+    registrationStartForwarning: +(process.env.REGISTRATION_START_FOREWARNING_SECS ?? 600) * 1000,
     telegram: {
         botToken: process.env.TELEGRAM_BOT_TOKEN as string
     },
