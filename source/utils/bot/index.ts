@@ -65,11 +65,27 @@ ${commandsText}`;
             logger.debug('Version command', ctx.chat);
             return ctx.reply(`The version of this bot is <b>${options.version}</b>`, { parse_mode: 'HTML' });
         });
+        this.bot.command('backup', async ctx => {
+            logger.debug('Backup command', ctx.chat);
+            const chatContext: any = ctx.chat;
+            if (this.checkItsMe(chatContext.username)) {
+                const chats = await this.database.getChats();
+                const formattedTimestamp = new Date().toISOString().replaceAll(':', '_');
+                return ctx.replyWithDocument({
+                    source: Buffer.from(JSON.stringify(chats)),
+                    filename: `chats_${formattedTimestamp}.json`
+                });
+            }
+        });
         this.bot.help(async ctx => {
             logger.debug('Help command', ctx.chat);
             return ctx.reply(helpText, { parse_mode: 'HTML' });
         });
         void this.bot.launch();
+    }
+
+    private checkItsMe(chatUsername: string): boolean {
+        return chatUsername === options.telegram.adminUsername;
     }
 
     private getMessageFromDifference(difference: Difference): string {
