@@ -21,7 +21,8 @@ export default {
     scrapingCron: process.env.SCRAPING_CRON ?? '* * * * *',
     registrationStartForwarning: +(process.env.REGISTRATION_START_FOREWARNING_SECS ?? 600) * 1000,
     telegram: {
-        botToken: process.env.TELEGRAM_BOT_TOKEN as string
+        botToken: process.env.TELEGRAM_BOT_TOKEN as string,
+        adminUsername: process.env.TELEGRAM_ADMIN_USERNAME as string
     },
     version: packageJson.version as string
 };
