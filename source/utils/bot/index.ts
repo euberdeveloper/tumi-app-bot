@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { Bot, InputFile } from 'grammy';
+import { Bot, Context, InputFile } from 'grammy';
 import { Logger } from 'euberlog';
 import * as dateAndTime from 'date-and-time';
 import * as dateAndTimeTimezone from 'date-and-time/plugin/timezone';
@@ -7,17 +7,18 @@ import * as dateAndTimeTimezone from 'date-and-time/plugin/timezone';
 import { Database } from '@/utils/database';
 import { Difference } from '@/types';
 import options from '@/options';
+import { IsAdminContext, isAdmin } from './isAdmin';
 
 const logger = new Logger('bot');
 dateAndTime.plugin(dateAndTimeTimezone);
 
 export class TumiAppBot {
-    private readonly bot: Bot;
+    private readonly bot: Bot<Context & IsAdminContext>;
     private readonly database: Database;
 
     constructor(botToken: string, database: Database) {
         this.database = database;
-        this.bot = new Bot(botToken);
+        this.bot = new Bot<Context & IsAdminContext>(botToken);
     }
 
     public async init(): Promise<void> {
@@ -39,6 +40,9 @@ ${commandsText}`;
 You have just been registered to the newsletter.
 
 ${commandsText}`;
+
+        this.bot.use(isAdmin(options.telegram.adminUsername));
+
         this.bot.command('start', async ctx => {
             logger.debug('Start command', ctx.chat);
             await this.database.pushChat(ctx.chat.id);
@@ -69,8 +73,7 @@ ${commandsText}`;
 
         this.bot.command('backup', async ctx => {
             logger.debug('Backup command', ctx.chat);
-            const chatContext: any = ctx.chat;
-            if (this.checkItsMe(chatContext.username)) {
+            if (ctx.config.isAdmin) {
                 const chats = await this.database.getChats();
                 const formattedTimestamp = new Date().toISOString().replaceAll(':', '_');
                 const fileName = `chats_${formattedTimestamp}.json`;
@@ -85,10 +88,6 @@ ${commandsText}`;
         });
 
         await this.bot.start();
-    }
-
-    private checkItsMe(chatUsername: string): boolean {
-        return chatUsername === options.telegram.adminUsername;
     }
 
     private getMessageFromDifference(difference: Difference): string {
