@@ -4,7 +4,7 @@ import { Logger } from 'euberlog';
 import { Database } from '@/utils/database';
 import { Scraper } from '@/utils/scraper';
 import { checkDifferences } from '@/utils/checkDifferences';
-import { Bot } from '@/utils/bot';
+import { TumiAppBot } from '@/utils/bot';
 
 const logger = new Logger('scheduler');
 
@@ -16,14 +16,14 @@ export class Scheduler {
     private readonly scrapingCron: string;
     private readonly database: Database;
     private readonly scraper: Scraper;
-    private readonly bot: Bot;
+    private readonly bot: TumiAppBot;
 
     constructor(
         dbOptions: { host: string; port: number },
         scrapingCron: string,
         database: Database,
         scraper: Scraper,
-        bot: Bot
+        bot: TumiAppBot
     ) {
         this.bull = new Bull(this.queueName, {
             redis: dbOptions

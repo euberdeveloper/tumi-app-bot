@@ -4,7 +4,7 @@ import { Logger } from 'euberlog';
 
 import { Scraper } from '@/utils/scraper';
 import { Database } from '@/utils/database';
-import { Bot } from '@/utils/bot';
+import { TumiAppBot } from '@/utils/bot';
 import { Scheduler } from '@/utils/scheduler';
 
 import OPTIONS from '@/options';
@@ -23,7 +23,8 @@ const logger = new Logger('main');
     const scraper = new Scraper(OPTIONS.apiUrl, OPTIONS.registrationStartForwarning);
     logger.debug('Scraper instance created');
 
-    const bot = new Bot(OPTIONS.telegram.botToken, database);
+    const bot = new TumiAppBot(OPTIONS.telegram.botToken, database);
+    await bot.init();
     logger.debug('Bot instance created');
 
     const scheduler = new Scheduler(
