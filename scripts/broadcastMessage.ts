@@ -4,7 +4,7 @@ import { Logger } from 'euberlog';
 import * as minimist from 'minimist';
 
 import { Database } from '@/utils/database';
-import { Bot } from '@/utils/bot';
+import { TumiAppBot } from '@/utils/bot';
 import OPTIONS from '@/options';
 
 const args = minimist(process.argv.slice(2));
@@ -14,7 +14,7 @@ const logger = new Logger({
 
 async function executeTask(message: string): Promise<void> {
     let database: Database | null = null;
-    let bot: Bot | null = null;
+    let bot: TumiAppBot | null = null;
 
     try {
         logger.info('Starting...');
@@ -25,7 +25,7 @@ async function executeTask(message: string): Promise<void> {
         await database.open();
         logger.debug('Database instance created');
 
-        bot = new Bot(OPTIONS.telegram.botToken, database);
+        bot = new TumiAppBot(OPTIONS.telegram.botToken, database);
         await bot.sendMessageToEveryone(message);
 
         logger.success('The message has been sent to all users');
@@ -36,7 +36,7 @@ async function executeTask(message: string): Promise<void> {
             await database.close();
         }
         if (bot !== null) {
-            bot.close();
+            await bot.close();
         }
     }
 }

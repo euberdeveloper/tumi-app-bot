@@ -57,10 +57,10 @@
     "date-and-time": "^2.4.0",
     "dotenv": "^16.0.1",
     "euberlog": "^2.1.5",
+    "grammy": "^1.19.2",
     "graphql-request": "^4.3.0",
     "minimist": "^1.2.6",
     "module-alias": "^2.2.2",
-    "redis": "^4.2.0",
-    "telegraf": "^4.8.5"
+    "redis": "^4.2.0"
   }
 }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { Telegraf } from 'telegraf';
+import { Bot, Context, InputFile } from 'grammy';
 import { Logger } from 'euberlog';
 import * as dateAndTime from 'date-and-time';
 import * as dateAndTimeTimezone from 'date-and-time/plugin/timezone';
@@ -7,21 +7,21 @@ import * as dateAndTimeTimezone from 'date-and-time/plugin/timezone';
 import { Database } from '@/utils/database';
 import { Difference } from '@/types';
 import options from '@/options';
+import { IsAdminContext, isAdmin } from './isAdmin';
 
 const logger = new Logger('bot');
 dateAndTime.plugin(dateAndTimeTimezone);
 
-export class Bot {
-    private readonly bot: Telegraf;
+export class TumiAppBot {
+    private readonly bot: Bot<Context & IsAdminContext>;
     private readonly database: Database;
 
     constructor(botToken: string, database: Database) {
         this.database = database;
-        this.bot = new Telegraf(botToken);
-        this.init();
+        this.bot = new Bot<Context & IsAdminContext>(botToken);
     }
 
-    private init(): void {
+    public init(): void {
         const welcomeText = `Welcome, I am the bot that will notify you if a new tumi event arrives or if spots are set free!`;
         const commandsText = `
 Commands:
@@ -41,11 +41,14 @@ You have just been registered to the newsletter.
 
 ${commandsText}`;
 
-        this.bot.start(async ctx => {
+        this.bot.use(isAdmin(options.telegram.adminUsername));
+
+        this.bot.command('start', async ctx => {
             logger.debug('Start command', ctx.chat);
             await this.database.pushChat(ctx.chat.id);
             return ctx.reply(startText, { parse_mode: 'HTML' });
         });
+
         this.bot.command('stop', async ctx => {
             logger.debug('Stop command', ctx.chat);
             await this.database.removeChat(ctx.chat.id);
@@ -54,6 +57,7 @@ ${commandsText}`;
                 { parse_mode: 'HTML' }
             );
         });
+
         this.bot.command('author', async ctx => {
             logger.debug('Author command', ctx.chat);
             return ctx.reply(
@@ -61,31 +65,33 @@ ${commandsText}`;
                 { parse_mode: 'HTML' }
             );
         });
+
         this.bot.command('version', async ctx => {
             logger.debug('Version command', ctx.chat);
             return ctx.reply(`The version of this bot is <b>${options.version}</b>`, { parse_mode: 'HTML' });
         });
+
         this.bot.command('backup', async ctx => {
             logger.debug('Backup command', ctx.chat);
-            const chatContext: any = ctx.chat;
-            if (this.checkItsMe(chatContext.username)) {
+            if (ctx.config.isAdmin) {
                 const chats = await this.database.getChats();
                 const formattedTimestamp = new Date().toISOString().replaceAll(':', '_');
-                return ctx.replyWithDocument({
-                    source: Buffer.from(JSON.stringify(chats)),
-                    filename: `chats_${formattedTimestamp}.json`
-                });
+                const fileName = `chats_${formattedTimestamp}.json`;
+                const backupFile = new InputFile(JSON.stringify(chats), fileName);
+                return ctx.replyWithDocument(backupFile);
             }
         });
-        this.bot.help(async ctx => {
+
+        this.bot.command('help', async ctx => {
             logger.debug('Help command', ctx.chat);
             return ctx.reply(helpText, { parse_mode: 'HTML' });
         });
-        void this.bot.launch();
-    }
 
-    private checkItsMe(chatUsername: string): boolean {
-        return chatUsername === options.telegram.adminUsername;
+        void this.bot.start({
+            onStart(botInfo) {
+                logger.debug('Bot started ', botInfo);
+            }
+        });
     }
 
     private getMessageFromDifference(difference: Difference): string {
@@ -127,7 +133,7 @@ The link to the event is ${link}
 
     public async sendMessageToChat(message: string, chatId: number): Promise<void> {
         try {
-            await this.bot.telegram.sendMessage(chatId, message, { parse_mode: 'HTML' });
+            await this.bot.api.sendMessage(chatId, message, { parse_mode: 'HTML' });
         } catch (error) {
             logger.error(`Error sending message to chat ${chatId}`, error);
         }
@@ -144,7 +150,7 @@ The link to the event is ${link}
         await this.sendMessageToEveryone(message);
     }
 
-    public close(): void {
-        this.bot.stop();
+    public async close(): Promise<void> {
+        await this.bot.stop();
     }
 }
