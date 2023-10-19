@@ -24,7 +24,7 @@ const logger = new Logger('main');
     logger.debug('Scraper instance created');
 
     const bot = new TumiAppBot(OPTIONS.telegram.botToken, database);
-    await bot.init();
+    bot.init();
     logger.debug('Bot instance created');
 
     const scheduler = new Scheduler(

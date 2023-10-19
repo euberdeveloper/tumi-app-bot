@@ -21,7 +21,7 @@ export class TumiAppBot {
         this.bot = new Bot<Context & IsAdminContext>(botToken);
     }
 
-    public async init(): Promise<void> {
+    public init(): void {
         const welcomeText = `Welcome, I am the bot that will notify you if a new tumi event arrives or if spots are set free!`;
         const commandsText = `
 Commands:
@@ -87,7 +87,11 @@ ${commandsText}`;
             return ctx.reply(helpText, { parse_mode: 'HTML' });
         });
 
-        await this.bot.start();
+        void this.bot.start({
+            onStart(botInfo) {
+                logger.debug('Bot started ', botInfo);
+            }
+        });
     }
 
     private getMessageFromDifference(difference: Difference): string {
